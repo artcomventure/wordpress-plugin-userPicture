@@ -1,8 +1,8 @@
 {
-  "name": "wordpress-plugin-imageSizes",
+  "name": "wordpress-plugin-userPicture",
   "repository": {
     "type": "git",
-    "url": "https://github.com/artcomventure/wordpress-plugin-imageSizes.git"
+    "url": "https://github.com/artcomventure/wordpress-plugin-userPicture.git"
   },
   "license": "MIT",
   "devDependencies": {
@@ -12,11 +12,11 @@
     "gulp-gettext": "^0.3.0",
     "gulp-replace": "^0.5.4"
   },
-  "description": "Edit all available image sizes.",
+  "description": "Set user's profile picture in WordPress.",
   "bugs": {
-    "url": "https://github.com/artcomventure/wordpress-plugin-imageSizes/issues"
+    "url": "https://github.com/artcomventure/wordpress-plugin-userPicture/issues"
   },
-  "homepage": "https://github.com/artcomventure/wordpress-plugin-imageSizes#readme",
+  "homepage": "https://github.com/artcomventure/wordpress-plugin-userPicture#readme",
   "version": "1.0.0",
   "main": "gulpfile.js",
   "dependencies": {},

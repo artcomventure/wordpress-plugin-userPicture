@@ -1,6 +1,6 @@
 # WordPress User Picture
 
-Handle user pictures via WP's media uploader.
+Set user's profile picture in WordPress
 
 ## Installation
 
