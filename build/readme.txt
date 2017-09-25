@@ -1,8 +1,21 @@
-# WordPress User Picture
+=== Image Sizes ===
+
+Contributors:
+Donate link:
+Tags: Media, Images, Thumbnails
+Requires at least:
+Tested up to:
+Stable tag:
+License: MIT
+License URI: https://github.com/artcomventure/wordpress-plugin-imageSizes/blob/master/LICENSE
+
+Edit all available image sizes.
+
+== Description ==
 
 Handle user pictures via WP's media uploader.
 
-## Installation
+== Installation ==
 
 1. Upload files to the `/wp-content/plugins/` directory of your WordPress installation.
   * Either [download the latest files](https://github.com/artcomventure/wordpress-plugin-userPicture/archive/master.zip) and extract zip (optionally rename folder)
@@ -18,15 +31,13 @@ Handle user pictures via WP's media uploader.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. **Enjoy**
 
-## Usage
+== Usage ==
 
 Set and change the user picture in the corresponding user edit form.
 
 If no user picture is selected the default [Gravatar](https://en.gravatar.com/) _stuff_ still works.
 
-![image](assets/screenshot-1.png)
-
-## Plugin Updates
+== Plugin Updates ==
 
 Although the plugin is not _yet_ listed on https://wordpress.org/plugins/, you can use WordPress' update functionality to keep it in sync with the files from [GitHub](https://github.com/artcomventure/wordpress-plugin-imageSizes).
 
@@ -37,6 +48,13 @@ Although the plugin is not _yet_ listed on https://wordpress.org/plugins/, you c
 
 _We test our plugin through its paces, but we advise you to take all safety precautions before the update. Just in case of the unexpected._
 
-## Questions, concerns, needs, suggestions?
+== Questions, concerns, needs, suggestions? ==
 
 Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-userPicture/issues) welcome.
+
+== Changelog ==
+
+= 1.0.0 - 2017-03-30 =
+**Added**
+
+* Initial file commit.

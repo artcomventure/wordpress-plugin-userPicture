@@ -1,0 +1,22 @@
+# Copyright (C) 2017 artcom venture GmbH
+# This file is distributed under the MIT License.
+msgid ""
+msgstr ""
+"Project-Id-Version: User Picture\n"
+"Report-Msgid-Bugs-To: info@artcom-venture.de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: artcom venture GmbH <info@artcom-venture.de>\n"
+"Language-Team: artcom venture GmbH <info@artcom-venture.de>\n"
+"Language: de_DE\n"
+
+msgid "Remove Profile Picture"
+msgstr "Benutzerbild entfernen"
+
+msgid "Set Profile Picture"
+msgstr "Benutzerbild festlegen"
+
+msgid "You can also change your profile picture on <a href=\"%s\">Gravatar</a>. But the WordPress' picture always has priority."
+msgstr "Dein Profilbild kannst du auch bei <a href=\"%s\">Gravatar</a> ändern. Aber das WordPress-Bild hat immer Vorrang."
