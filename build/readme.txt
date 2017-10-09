@@ -13,7 +13,7 @@ Edit all available image sizes.
 
 == Description ==
 
-Handle user pictures via WP's media uploader.
+Set user's profile picture in WordPress
 
 == Installation ==
 
@@ -54,7 +54,12 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-userP
 
 == Changelog ==
 
-= 1.0.0 - 2017-03-30 =
+= 1.0.1 - 2017-10-09 =
+**Fixed**
+
+* PHP error.
+
+= 1.0.0 - 2017-09-25 =
 **Added**
 
 * Initial file commit.

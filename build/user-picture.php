@@ -4,7 +4,7 @@
  * Plugin Name: User Picture
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-userPicture
  * Description: Set user's profile picture in WordPress
- * Version: 1.0.0
+ * Version: 1.0.1
  * Text Domain: userpicture
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -260,7 +260,9 @@ function get_user_picture_id( $id_or_email ) {
 		$user = get_user_by( 'email', $id_or_email );
 	}
 
-	return get_user_meta( $user->ID, 'avatar', true );
+	if ( $user ) return get_user_meta( $user->ID, 'avatar', true );
+
+	return false;
 }
 
 /**
@@ -298,7 +300,5 @@ add_action( 'wp_ajax_imagesizes_reset', 'userpicture_deactivate' );
 add_action( 'wp_ajax_nopriv_imagesizes_reset', 'userpicture_deactivate' );
 register_deactivation_hook( __FILE__, 'userpicture_deactivate' );
 function userpicture_deactivate() {
-	foreach ( get_users() as $user ) {
-		delete_user_meta( $user->ID, 'avatar' );
-	}
+	delete_metadata( 'user', 0, 'avatar', '', true );
 }
