@@ -33,6 +33,7 @@ gulp.task( 'build', ['clear:build', 'po2mo'], function() {
         '!readme.txt',
         '!gulpfile.js',
         '!package.json',
+        '!package-lock.json',
         '!.gitignore',
         '!node_modules{,/**}',
         '!build{,/**}',
