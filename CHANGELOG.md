@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 - 2019-10-22
+**Fixed**
+
+* Fatal PHP error on activation :/
+
 ## 1.1.0 - 2019-10-22
 **Added**
 

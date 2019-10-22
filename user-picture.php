@@ -4,7 +4,7 @@
  * Plugin Name: User Picture
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-userPicture
  * Description: Set user's profile picture in WordPress
- * Version: 1.1.0
+ * Version: 1.1.1
  * Text Domain: userpicture
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -160,147 +160,153 @@ function save_userpicture( $user_id ) {
 /**
  * Retrieve the avatar `<img>` tag for a user, email address, MD5 hash, comment, or post.
  * Original @see `/wp-includes/pluggable.php`
+ *
+ * On activation WP's `get_avatar()` is loaded prior this file
+ * so userpicture's one needs to be conditionally defined.
+ * Once activated THIS `get_avatar()` is used!
  */
-function get_avatar( $id_or_email, $size = 96, $default = '', $alt = '', $args = null ) {
-	$defaults = array(
-		'size'          => 96,
-		'height'        => null,
-		'width'         => null,
-		'default'       => get_option( 'avatar_default', 'mystery' ),
-		'force_default' => false,
-		'rating'        => get_option( 'avatar_rating' ),
-		'scheme'        => null,
-		'alt'           => '',
-		'class'         => null,
-		'force_display' => false,
-		'extra_attr'    => '',
-	);
+if ( ! function_exists( 'get_avatar' ) ) :
+	function get_avatar( $id_or_email, $size = 96, $default = '', $alt = '', $args = null ) {
+		$defaults = array(
+			'size'          => 96,
+			'height'        => null,
+			'width'         => null,
+			'default'       => get_option( 'avatar_default', 'mystery' ),
+			'force_default' => false,
+			'rating'        => get_option( 'avatar_rating' ),
+			'scheme'        => null,
+			'alt'           => '',
+			'class'         => null,
+			'force_display' => false,
+			'extra_attr'    => '',
+		);
 
-	if ( empty( $args ) ) {
-		$args = array();
-	}
-
-	// try to get size from WP's image size
-	if ( !is_numeric($size) ) {
-		global $_wp_additional_image_sizes;
-
-		if ( in_array( $size, array('thumbnail', 'medium', 'medium_large', 'large') ) ) {
-			$args['width'] = get_option( "{$size}_size_w" );
-			$args['height'] = get_option( "{$size}_size_h" );
-			$args['size'] = $args['width'] ?: $args['height'];
-		} elseif ( isset( $_wp_additional_image_sizes[ $size ] ) ) {
-			$args['width'] = $_wp_additional_image_sizes[ $size ]['width'];
-			$args['height'] = $_wp_additional_image_sizes[ $size ]['height'];
-			$args['size'] = $args['width'] ?: $args['height'];
+		if ( empty( $args ) ) {
+			$args = array();
 		}
-		else $size = 96; // default
-	}
-	else $args['size'] = (int) $size;
 
-	$args['default'] = $default;
-	$args['alt']     = $alt;
+		// try to get size from WP's image size
+		if ( !is_numeric($size) ) {
+			global $_wp_additional_image_sizes;
 
-	$args = wp_parse_args( $args, $defaults );
+			if ( in_array( $size, array('thumbnail', 'medium', 'medium_large', 'large') ) ) {
+				$args['width'] = get_option( "{$size}_size_w" );
+				$args['height'] = get_option( "{$size}_size_h" );
+				$args['size'] = $args['width'] ?: $args['height'];
+			} elseif ( isset( $_wp_additional_image_sizes[ $size ] ) ) {
+				$args['width'] = $_wp_additional_image_sizes[ $size ]['width'];
+				$args['height'] = $_wp_additional_image_sizes[ $size ]['height'];
+				$args['size'] = $args['width'] ?: $args['height'];
+			}
+			else $size = 96; // default
+		}
+		else $args['size'] = (int) $size;
 
-	if ( empty( $args['height'] ) ) {
-		$args['height'] = $args['size'];
-	}
-	if ( empty( $args['width'] ) ) {
-		$args['width'] = $args['size'];
-	}
+		$args['default'] = $default;
+		$args['alt']     = $alt;
 
-	if ( is_object( $id_or_email ) && isset( $id_or_email->comment_ID ) ) {
-		$id_or_email = get_comment( $id_or_email );
-	}
+		$args = wp_parse_args( $args, $defaults );
 
-	/**
-	 * Filters whether to retrieve the avatar URL early.
-	 *
-	 * Passing a non-null value will effectively short-circuit get_avatar(), passing
-	 * the value through the {@see 'get_avatar'} filter and returning early.
-	 *
-	 * @since 4.2.0
-	 *
-	 * @param string $avatar      HTML for the user's avatar. Default null.
-	 * @param mixed  $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-	 *                            user email, WP_User object, WP_Post object, or WP_Comment object.
-	 * @param array  $args        Arguments passed to get_avatar_url(), after processing.
-	 */
-	$avatar = apply_filters( 'pre_get_avatar', null, $id_or_email, $args );
+		if ( empty( $args['height'] ) ) {
+			$args['height'] = $args['size'];
+		}
+		if ( empty( $args['width'] ) ) {
+			$args['width'] = $args['size'];
+		}
 
-	if ( ! is_null( $avatar ) ) {
-		/** This filter is documented in wp-includes/pluggable.php */
+		if ( is_object( $id_or_email ) && isset( $id_or_email->comment_ID ) ) {
+			$id_or_email = get_comment( $id_or_email );
+		}
+
+		/**
+		 * Filters whether to retrieve the avatar URL early.
+		 *
+		 * Passing a non-null value will effectively short-circuit get_avatar(), passing
+		 * the value through the {@see 'get_avatar'} filter and returning early.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param string $avatar      HTML for the user's avatar. Default null.
+		 * @param mixed  $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
+		 *                            user email, WP_User object, WP_Post object, or WP_Comment object.
+		 * @param array  $args        Arguments passed to get_avatar_url(), after processing.
+		 */
+		$avatar = apply_filters( 'pre_get_avatar', null, $id_or_email, $args );
+
+		if ( ! is_null( $avatar ) ) {
+			/** This filter is documented in wp-includes/pluggable.php */
+			return apply_filters( 'get_avatar', $avatar, $id_or_email, $args['size'], $args['default'], $args['alt'], $args );
+		}
+
+		if ( ! $args['force_display'] && ! get_option( 'show_avatars' ) ) {
+			return false;
+		}
+
+		// try to get user picture
+		if ( $attachment_id = get_user_meta( $id_or_email, apply_filters( 'userpicture_meta_key', '' ), true ) ) {
+			if ( !$picture = image_get_intermediate_size( $attachment_id, $size ) ) // image size
+				$picture = image_get_intermediate_size( $attachment_id, array($size, $size) ); // explicit dimensions
+			$args['url'] = $picture['url'];
+			$args['width'] = $picture['width'];
+			$args['height'] = $picture['height'];
+			$args['found_avatar'] = true;
+		}
+		else { // ... otherwise take gravatar
+			$url2x = get_avatar_url( $id_or_email, array_merge( $args, array( 'size' => $args['size'] * 2 ) ) );
+			$url2x = esc_url( $url2x ) . ' 2x';
+			$args = get_avatar_data( $id_or_email, $args );
+		}
+
+		$url = $args['url'];
+
+		if ( ! $url || is_wp_error( $url ) ) {
+			return false;
+		}
+
+		$class = array( 'avatar', 'avatar-' . $size, 'photo' );
+
+		if ( ! $args['found_avatar'] || $args['force_default'] ) {
+			$class[] = 'avatar-default';
+		}
+
+		if ( $args['class'] ) {
+			if ( is_array( $args['class'] ) ) {
+				$class = array_merge( $class, $args['class'] );
+			} else {
+				$class[] = $args['class'];
+			}
+		}
+
+		$avatar = sprintf(
+			"<img alt='%s' src='%s' srcset='%s' class='%s' height='%d' width='%d' %s/>",
+			esc_attr( $args['alt'] ),
+			esc_url( $url ),
+			isset($url2x) ? $url2x : '',
+			esc_attr( join( ' ', $class ) ),
+			(int) $args['height'],
+			(int) $args['width'],
+			$args['extra_attr']
+		);
+
+		/**
+		 * Filters the avatar to retrieve.
+		 *
+		 * @since 2.5.0
+		 * @since 4.2.0 The `$args` parameter was added.
+		 *
+		 * @param string $avatar      &lt;img&gt; tag for the user's avatar.
+		 * @param mixed  $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
+		 *                            user email, WP_User object, WP_Post object, or WP_Comment object.
+		 * @param int    $size        Square avatar width and height in pixels to retrieve.
+		 * @param string $default     URL for the default image or a default type. Accepts '404', 'retro', 'monsterid',
+		 *                            'wavatar', 'indenticon','mystery' (or 'mm', or 'mysteryman'), 'blank', or 'gravatar_default'.
+		 *                            Default is the value of the 'avatar_default' option, with a fallback of 'mystery'.
+		 * @param string $alt         Alternative text to use in the avatar image tag. Default empty.
+		 * @param array  $args        Arguments passed to get_avatar_data(), after processing.
+		 */
 		return apply_filters( 'get_avatar', $avatar, $id_or_email, $args['size'], $args['default'], $args['alt'], $args );
 	}
-
-	if ( ! $args['force_display'] && ! get_option( 'show_avatars' ) ) {
-		return false;
-	}
-
-	// try to get user picture
-	if ( $attachment_id = get_user_meta( $id_or_email, apply_filters( 'userpicture_meta_key', '' ), true ) ) {
-		if ( !$picture = image_get_intermediate_size( $attachment_id, $size ) ) // image size
-			$picture = image_get_intermediate_size( $attachment_id, array($size, $size) ); // explicit dimensions
-		$args['url'] = $picture['url'];
-		$args['width'] = $picture['width'];
-		$args['height'] = $picture['height'];
-		$args['found_avatar'] = true;
-	}
-	else { // ... otherwise take gravatar
-		$url2x = get_avatar_url( $id_or_email, array_merge( $args, array( 'size' => $args['size'] * 2 ) ) );
-		$url2x = esc_url( $url2x ) . ' 2x';
-		$args = get_avatar_data( $id_or_email, $args );
-	}
-
-	$url = $args['url'];
-
-	if ( ! $url || is_wp_error( $url ) ) {
-		return false;
-	}
-
-	$class = array( 'avatar', 'avatar-' . $size, 'photo' );
-
-	if ( ! $args['found_avatar'] || $args['force_default'] ) {
-		$class[] = 'avatar-default';
-	}
-
-	if ( $args['class'] ) {
-		if ( is_array( $args['class'] ) ) {
-			$class = array_merge( $class, $args['class'] );
-		} else {
-			$class[] = $args['class'];
-		}
-	}
-
-	$avatar = sprintf(
-		"<img alt='%s' src='%s' srcset='%s' class='%s' height='%d' width='%d' %s/>",
-		esc_attr( $args['alt'] ),
-		esc_url( $url ),
-		isset($url2x) ? $url2x : '',
-		esc_attr( join( ' ', $class ) ),
-		(int) $args['height'],
-		(int) $args['width'],
-		$args['extra_attr']
-	);
-
-	/**
-	 * Filters the avatar to retrieve.
-	 *
-	 * @since 2.5.0
-	 * @since 4.2.0 The `$args` parameter was added.
-	 *
-	 * @param string $avatar      &lt;img&gt; tag for the user's avatar.
-	 * @param mixed  $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-	 *                            user email, WP_User object, WP_Post object, or WP_Comment object.
-	 * @param int    $size        Square avatar width and height in pixels to retrieve.
-	 * @param string $default     URL for the default image or a default type. Accepts '404', 'retro', 'monsterid',
-	 *                            'wavatar', 'indenticon','mystery' (or 'mm', or 'mysteryman'), 'blank', or 'gravatar_default'.
-	 *                            Default is the value of the 'avatar_default' option, with a fallback of 'mystery'.
-	 * @param string $alt         Alternative text to use in the avatar image tag. Default empty.
-	 * @param array  $args        Arguments passed to get_avatar_data(), after processing.
-	 */
-	return apply_filters( 'get_avatar', $avatar, $id_or_email, $args['size'], $args['default'], $args['alt'], $args );
-}
+endif;
 
 /**
  * Remove srcset and sizes attributes for user picture.
@@ -411,9 +417,10 @@ function userpicture_plugin_row_meta( $links, $file ) {
 /**
  * Delete all plugin traces on deactivation.
  */
-add_action( 'wp_ajax_imagesizes_reset', 'userpicture_deactivate' );
-add_action( 'wp_ajax_nopriv_imagesizes_reset', 'userpicture_deactivate' );
-register_deactivation_hook( __FILE__, 'userpicture_deactivate' );
-function userpicture_deactivate() {
+//add_action( 'wp_ajax_imagesizes_reset', 'userpicture_on_uninstall' );
+//add_action( 'wp_ajax_nopriv_imagesizes_reset', 'userpicture_on_uninstall' );
+//register_deactivation_hook( __FILE__, 'userpicture_on_uninstall' );
+register_uninstall_hook( __FILE__, 'userpicture_on_uninstall' );
+function userpicture_on_uninstall() {
 	delete_metadata( 'user', 0, apply_filters( 'userpicture_meta_key', '' ), '', true );
 }
