@@ -7,7 +7,7 @@
   "license": "MIT",
   "devDependencies": {
     "del": "^2.2.0",
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.0",
     "gulp-gettext": "^0.3.0",
     "gulp-replace": "^0.5.4"
